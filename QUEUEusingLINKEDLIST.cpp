@@ -5,7 +5,7 @@ int dequeue();
 int peek();
 int display();
 int len();
-
+hello
 struct node
 {
 	int data;
