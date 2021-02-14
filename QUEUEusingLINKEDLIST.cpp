@@ -66,7 +66,7 @@ int createnode()
 int enqueue()
 {
 	createnode();
-	if(front==NULL && rear == NULL)
+	if(front==NULL)
 	{
 		front = newnode;
 		rear = newnode;
