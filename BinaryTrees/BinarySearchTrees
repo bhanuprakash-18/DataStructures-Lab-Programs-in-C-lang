@@ -1,0 +1,310 @@
+#include<stdio.h>
+#include<stdlib.h>
+int insert(int);
+int inorder(struct node*);
+int preorder(struct node*);
+int postorder(struct node*);
+int create(int);
+int search(int);
+int del(int);
+int u;
+struct node
+{
+	int data;
+	struct node* left;
+	struct node* right;
+};
+struct node* newnode;
+struct node* root=NULL;
+struct node* temp;
+struct node* largestnode;
+struct node* prevlar;
+struct node* findlargestnode();
+int main()
+{
+	int ele,n,option,loop=1;
+	printf("Enter the number of elements to insert in BST\n");
+	scanf("%d",&n);
+	while(n)
+	{
+		printf("Enter the data for BST\n");
+		scanf("%d",&ele);
+		insert(ele);
+		n--;
+	}
+	while(loop)
+	{
+	printf("\n1.add new element, 2.search an element, 3.delete an element, 4.Inorder, 5.Quit\n");
+	printf("Enter the option\n");
+	scanf("%d",&option);
+	switch(option)
+	{
+		case 1:
+			printf("Enter the data for BST\n");
+			scanf("%d",&ele);
+			insert(ele);
+			break;
+		case 2:
+			printf("Enter the data to search in BST\n");
+			scanf("%d",&ele);
+			if(search(ele))
+			printf("The element is present\n");
+			else
+			printf("The element is not present\n");
+			break;
+		case 3:
+			printf("Enter the data to delete in BST\n");
+			scanf("%d",&ele);
+			del(ele);
+			break;
+		case 4:
+			if(root==NULL)
+			printf("Elements are not present");
+			else
+			{
+				printf("The inorder is\n");
+				inorder(root);
+				printf("\nThe preorder is\n");
+				preorder(root);
+				printf("\nThe postorder is\n");
+				postorder(root);
+			}
+			
+			break;
+		case 5:
+			loop=0;
+			break;
+		default:
+			printf("Invalid option\n");
+	}
+	}
+}
+int search(int ele)
+{
+	temp = root;
+	if(root==NULL)
+	{
+		printf("The BST is empty \n");
+	}
+	else
+	{
+		while(temp!=NULL)
+		{
+			if(temp->data == ele)
+			{
+				return true;
+			}
+			if(ele < temp->data)
+			{
+				temp = temp->left;
+			}
+			if(ele > temp->data)
+			{
+				temp = temp->right;
+			}
+		}
+	}	
+	return 0;
+}
+
+int del(int ele)
+{
+	temp = root;
+	int pos,swap;
+	struct node* prev;
+
+	if(root==NULL)
+	{
+		printf("The BST is empty \n");
+	}
+	else
+	{
+		while(1)
+		{
+			if(temp->data==ele && temp->left!=NULL && temp->right!=NULL)
+			{
+				largestnode = findlargestnode();
+				swap = largestnode->data;
+				largestnode->data = temp->data;
+				temp->data = swap;
+				if(largestnode->left==NULL && largestnode->right==NULL)
+				{
+					if(u==0)
+					prevlar->left = NULL;
+					else
+					prevlar->right = NULL;
+					free(largestnode);
+					return 0;
+				}
+				if((largestnode->right==NULL) && (largestnode->left!=NULL ))
+				{
+					if(u==0)
+					temp->left = largestnode->left;
+					else
+					prevlar->right = largestnode->left;
+					free(largestnode);
+					return 0;
+				}
+			}
+			if(temp->data == ele && temp->left==NULL && temp->right==NULL)
+			{
+				if(root->data == ele)
+				root = NULL;
+				else{
+				if(pos==0)
+				prev->left = NULL;
+				if(pos==1)
+				prev->right = NULL;
+				}
+				free(temp);
+				return 0;
+			}
+			if(temp->data == ele && (temp->right==NULL) && (temp->left!=NULL ))
+			{
+				if(ele == root->data)
+				root = root->left;
+				else
+				{
+					if(pos==0)
+					prev->left = temp->left;
+					if(pos==1)
+					prev->right = temp->left;
+				}
+				free(temp);
+				return 0;
+			}
+			if(temp->data == ele && (temp->right!=NULL) && (temp->left==NULL ))
+			{
+				if(ele == root->data)
+				root = root->right;
+				else
+				{
+				if(pos==0)
+				prev->left = temp->right;
+				if(pos==1)
+				prev->right = temp->right;
+				}
+				free(temp);
+				return 0;
+			}
+			if(ele < temp->data)
+			{
+				prev = temp;
+				temp = temp->left;
+				pos = 0;
+			}
+			if(ele > temp->data)
+			{
+				prev = temp;
+				temp = temp->right;
+				pos = 1;
+			}
+		}
+	}
+	return 0;
+}
+
+int insert(int ele)
+{
+	create(ele);
+	temp = root;
+	if(root == NULL)
+	{
+		root = newnode;
+	}
+	else
+	{
+		while(1)
+		{
+			if(newnode->data <= temp->data)
+			{
+				if(temp->left==NULL)
+				{
+					temp->left = newnode;
+					return 0;
+				}
+				else
+				{
+					temp = temp->left;
+				}
+			}
+			else
+			{
+				if(temp->right==NULL)
+				{
+					temp->right = newnode;
+					return 0;
+				}
+				else
+				{
+					temp = temp->right;
+				}
+			}
+		}
+		
+	}
+}
+
+int inorder(struct node* root)
+{
+	if(root ==NULL)
+	{
+		return 0;
+	}else
+	{
+	inorder(root->left);
+	printf("%d\t",root->data);
+	inorder(root->right);
+	}
+	return 0;
+}
+int preorder(struct node* root)
+{
+	if(root ==NULL)
+	{
+		return 0;
+	}
+	else
+	{
+	printf("%d\t",root->data);
+	preorder(root->left);	
+	preorder(root->right);
+	}
+
+	return 0;
+}
+int postorder(struct node* root)
+{
+	if(root ==NULL)
+	{
+		return 0;
+	}
+	else
+	{
+	postorder(root->left);
+	postorder(root->right);
+	printf("%d\t",root->data);
+	}
+	return 0;
+}
+
+struct node* findlargestnode()
+{
+	largestnode = temp->left;
+	prevlar=temp;
+	u=0;
+	while(largestnode->right!=NULL)
+	{
+		prevlar = largestnode;
+		largestnode = largestnode->right;
+		u=1;
+	}
+	return largestnode;
+}
+int create(int ele)
+{
+	newnode = (struct node*)malloc(sizeof(struct node));
+	newnode->data = ele;
+	newnode->left = NULL;
+	newnode->right = NULL;
+}
