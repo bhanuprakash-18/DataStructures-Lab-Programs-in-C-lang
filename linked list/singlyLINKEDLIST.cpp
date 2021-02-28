@@ -1,182 +1,100 @@
 #include<stdio.h>
 #include<stdlib.h>
-int del();
-int insert();
-int createnode();  
-int display();  
-
+void del();
+void insert();
+void createnode();
+void display();
+int length();
+int option,pos;
 struct node{
 	int data;
 	struct node* link;
-};
-struct node* head=NULL;;
-struct node* newnode;
-struct node* tail;
-int option;
+}*head=NULL,*newnode,*temp;
+
 int main(){
-	int loop =1;
-	while(loop)
-	{
-		printf("Choose the option 1 to insert, 2 to display, 3 to delete an element, 4 to Quit\n");
+	while(1){
+		printf("\n\n****Choose the option***\n 1 to insert\n 2 to display\n 3 to delete an element\n 4 to find length\n 5. to Quit\n\n");
 		scanf("%d",&option);
-		switch (option)
-		{
-			case 1:
-				insert();
-				break;
-			case 2:
-				display();
-				break;
-			case 3:
-				del();
-				break;
-			case 4:
-				loop = 0;
-				break;
-			default:
-				printf("Not a valid option\n");		
+		switch (option){
+			case 1:insert();break;
+			case 2:display();break;
+			case 3:del();break;
+			case 4:printf("The length of list is %d",length());break;
+			case 5:return 0;
+			default:printf("invalid option\n");
 		}
-	}
-	return 0;
+	}return 0;
 }
-int insert()
-{
+void insert(){
+	int l,i;
 	createnode();
-	if(head==NULL)
-	{
+	printf("Enter the position of element to insert\n");
+	scanf("%d",&pos);
+	l=length();
+	temp=head;
+	if(pos==1){
+		newnode->link=head;
 		head = newnode;
-		tail = newnode;
 	}
-	else
-	{
-		printf("Choose the option 1 to insert at beginnig, 2 at end, 3 at a particular position\n");
-		scanf("%d",&option);
-		switch (option)
-			{
-				case 1:
-					newnode->link=head;
-					head=newnode;
-					break;
-				case 2:
-					tail->link= newnode;
-					tail = newnode;
-					break;
-				case 3:
-					{
-						printf("Enter the position to insert the new element\n");
-						int pos,i=1;
-						scanf("%d",&pos);
-						struct node* temp;
-						struct node* prev;
-						temp = head;
-						if(pos==1)
-						{
-							newnode->link=temp;
-							head = temp;
-						}
-						else{
-							while(i<pos-1 && temp->link!=NULL)
-							{
-								prev = temp;
-								temp=temp->link;
-							}
-							if(temp->link==NULL)
-							{
-								temp->link=newnode;
-								tail = newnode;
-							}
-							else{
-								newnode->link = temp;
-							prev->link = newnode;
-							}
-							}
-						
-						break;
-					}
-				default:
-					printf("Not a valid option\n");
-			}
+	else if(pos<=l+1){
+		printf("\n2\t\t");
+		for(i=0;i<pos-2;i++)
+		temp=temp->link;
+		newnode->link=temp->link;
+		temp->link=newnode;
 	}
-	return 0;
+	else printf("This position is not valid\n");
 }
-int del()
-{
-		printf("Choose the option 1 to delete at beginnig, 2 at end, 3 at a particular position\n");
-		scanf("%d",&option);
-		struct node* temp;
-		switch (option)
-			{
-				case 1:
-					temp = head;
-					head = temp->link;
-					free(temp);
-					break;
-				case 2:
-					struct node* prev;
-					prev = head;
-					while(prev->link!=tail)
-					{
-						prev = prev->link;
-					}
-					temp = tail;
-					tail = prev;
-					prev->link = NULL;
-					free(temp);
-					break;
-				case 3:
-					{
-						printf("Enter the position after which to delete the element\n");
-						int pos,i=1;
-						scanf("%d",&pos);
-						struct node* prev;
-						temp = head;
-						if(pos==1)
-						{
-							head = temp->link;
-							free(temp);
-						}else{
-							while(i<pos && temp->link!=NULL)
-							{
-								prev = temp;
-								temp=temp->link;
-							}
-							if(temp->link==NULL)
-							{
-								prev->link = NULL;
-								tail = prev;
-								free(temp);
-							}
-							else{
-								prev->link = temp->link;
-								free(temp);
-							}
-						}
-						
-						break;
-					}
-				default:
-					printf("Not a valid option\n");
-			}
-	return 0;
-}
-int display()
-{
-	struct node* temp;
+void del(){
+	int l,i;
+	if(head==NULL)
+		printf("The list is empty\n");
+		else{
+	printf("Enter the position of element to delete\n");
+	scanf("%d",&pos);
+	l=length();
+	struct node* temp1;
+	temp=head;	
+	if(pos==1){	
+		head=temp->link;
+		temp1=temp;
+		free(temp1);	
+	}
+	else if(l>=pos){
+		for(i=0;i<pos-2;i++)
+		temp=temp->link;
+		temp->link=(temp->link)->link;
+		temp1=temp->link;
+		free(temp1);
+	}
+	else printf("In this positon element is not present");
+}}
+void display(){
 	temp = head;
-	while(temp != NULL)
-	{
-		printf("%d\t", temp->data);
+	if(head==NULL)
+		printf("The list is empty\n");
+		else{
+			printf("The elements in the list are\n");
+			while(temp != NULL){
+				printf("%d\t", temp->data);
+				temp = temp->link;
+			}
+		}
+}
+int length(){
+	temp=head;
+	int len=0;
+	while(temp!=NULL){
+		len++;
 		temp = temp->link;
 	}
-	return 0;
+	return len;
 }
-int createnode()
-{
+void createnode(){
 	int element;
 	newnode = (struct node*)malloc(sizeof(struct node));
 	printf("Enter the data\n");
 	scanf("%d", &element);
 	newnode->data=element;
 	newnode->link = NULL;
-	return 0;
 }
