@@ -1,0 +1,73 @@
+#include<stdio.h>
+
+void Swap(int *x,int *y)
+{
+	int temp;
+	temp = *x;
+	*x = *y;
+	*y = temp;
+}
+
+
+void Create_Heap(int A[],int n)
+{
+	int i=n,temp;
+	temp = A[i];
+	while(i>1 && temp>A[i/2])
+	{
+		A[i] = A[i/2];
+		i = i/2;
+	}
+	A[i] = temp;
+}
+
+int Heapsort(int A[],int n)
+{
+	int x,i,j,val;
+	x = A[n];
+	val =A[1];
+	A[1] = A[n];
+	A[n]=val;
+	i=1;
+	j=2*i;
+	while(j<n-1)
+	{
+		if(A[j+1] > A[j])
+		j = j+1;
+		if(A[j]>A[i]){
+		Swap(&A[i],&A[j]);
+		i=j;
+		j=2*j;
+		}
+		else
+	    break;
+	}
+	return val;
+}
+
+
+int main()
+{
+	int A[10],n,i,x;
+	
+	printf("Enter the no. of elements of the array: ");
+	scanf("%d",&n);
+	
+ 	printf("Enter the elements of the array: \n");
+ 	for(i=0; i<n ; i++){
+ 		scanf("%d",&A[i]);
+	 }
+	 for(i=2;i<n;i++){
+	 	Create_Heap(A,i);
+	 }
+    
+	printf("**************************\n");
+	printf("The sorted array is \n");
+	for(i=n-1; i>1 ; i--){
+		Heapsort(A,i);
+	}
+	for(i=1;i<n;i++){
+		printf("%d\n",A[i]);
+	}
+
+}
